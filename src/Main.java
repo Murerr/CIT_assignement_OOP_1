@@ -1,24 +1,13 @@
-
 import guessing.game.GuessingGamePanel;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Scanner;
 
 
 public class Main extends Application {
-
     public static void main(String[] args) {
         launch(args);
     }
@@ -26,29 +15,25 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
+            BorderPane mainPane = new BorderPane();
+            Group root = new Group();
+            Scene scene = new Scene(root,1200,800);
 
-            StackPane root = new StackPane();
-            TabPane tabPane = new TabPane();
+            TabPane tp = new TabPane();
+            tp.getTabs().add (new GuessingGamePanel());
+            tp.getTabs().add (new LotteryGamePanel());
 
-            Tab guessingGameTab = new Tab("Guessing Game Panel");
-            Tab lotteryGameTab = new Tab("Lottery Game Panel");
 
-            tabPane.getTabs().add(guessingGameTab);
-            tabPane.getTabs().add(lotteryGameTab);
+            mainPane.setCenter(tp);
+            mainPane.prefHeightProperty().bind(scene.heightProperty());
+            mainPane.prefWidthProperty().bind(scene.widthProperty());
 
-            root.getChildren().add(tabPane);
-            primaryStage.setScene(new Scene(root, 1200, 800));
+            root.getChildren().add(mainPane);
+            primaryStage.setTitle("Assignement Rudy MURER R00171701");
+            primaryStage.setScene(scene);
             primaryStage.show();
-
         } catch(Exception e) {
             e.printStackTrace();
         }
-
-
-
     }
-
-
-
-
 }

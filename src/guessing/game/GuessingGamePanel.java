@@ -1,9 +1,12 @@
 package guessing.game;
 
-import javafx.stage.Stage;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class GuessingGamePanel extends javafx.scene.control.Tab {
     private static int WIN_STREAK = 0;
@@ -17,43 +20,73 @@ public class GuessingGamePanel extends javafx.scene.control.Tab {
         THREE_STAR_PRIZE
     }
 
+    private Label logLabel;
+    private TextField inputText;
+
     public GuessingGamePanel() {
-        Scanner scanner = new Scanner(System.in);
-        while (true) { // maybe while window on focus ?
-            GuessingGame guessingGame = createANewGuessingGame();
 
-            while (!guessingGame.isGameLost()) {
-                int userNumberGuessedInput = scanner.nextInt();
+        this.setText("Guessing Game");
+        GridPane gb = new GridPane();
+        Label l1 = new Label("Press Start and choose a Number Between 1 & 50");
+        inputText = new TextField ();
+        Button guessButton = new Button ("Guess");
+        guessButton.setDefaultButton(true);
+        Button startButton = new Button ("Start A New Game");
+        Button restartButton = new Button ("Restart");
+        logLabel = new Label("Logs :\n");
+        gb.add(l1,1,0);
+        gb.add(inputText,1,1);
+        gb.add(startButton,2,0);
+        gb.add(guessButton,2,1);
+        gb.add(restartButton,2,2);
+        gb.add(logLabel,1,2);
+        gb.setAlignment(Pos.TOP_LEFT);
+        this.setContent(gb);
 
-                if (guessingGame.isGameWon(userNumberGuessedInput)) {
-                    increaseWinStreak(guessingGame);
-                    prizeArrayList.add(getPrize());
-                    displayAllPrizes(prizeArrayList);
-                    break;
+        startButton.setOnAction(event -> {
+        GuessingGame guessingGame = new GuessingGame(MAX_ATTEMPTS);
+        printLogsInWindow(guessingGame.displayStartGame());
+            guessButton.setOnAction(event1 -> {
+                startGuessingGame(guessingGame);
+                inputText.setText("");
+            });
+        });
 
-                } else if (guessingGame.isGameLost()) {
-                    setWinStreakToZero(guessingGame);
-                    break;
-                }
-            }
+    }
+
+    private void startGuessingGame(GuessingGame guessingGame) {
+        int userNumberGuessedInput = Integer.parseInt(inputText.getText());
+        logLabel.setText("");
+
+        if (guessingGame.isGuessedNumberBigger(userNumberGuessedInput)) {
+            guessingGame.decreaseAttempt();
+            printLogsInWindow(guessingGame.displayNumberIsBigger(userNumberGuessedInput));
         }
 
+        if (guessingGame.isGuessedNumberSmaller(userNumberGuessedInput)) {
+            guessingGame.decreaseAttempt();
+            printLogsInWindow(guessingGame.displayNumberIsSmaller(userNumberGuessedInput));
+        }
+
+        if (guessingGame.isGameWon(userNumberGuessedInput)) {
+            printLogsInWindow(guessingGame.displayGameWon());
+            increaseWinStreak();
+            prizeArrayList.add(getPrize());
+            displayAllPrizes(prizeArrayList);
+        }
+
+        if (guessingGame.isGameLost()) {
+            printLogsInWindow(guessingGame.displayGameLost());
+            setWinStreakToZero();
+
+        }
     }
 
-    private GuessingGame createANewGuessingGame() {
-        GuessingGame guessingGame = new GuessingGame(MAX_ATTEMPTS);
-        System.out.println("[CHEAT] the Number is " + guessingGame.getRandomNumber());
-        System.out.println("Please Guess a Number Between 1 & 50\t" + MAX_ATTEMPTS + " Chances Left");
-        return guessingGame;
-    }
-
-    private void setWinStreakToZero(GuessingGame guessingGame) {
-        System.out.println("You LOOSE the number was\t" + guessingGame.getRandomNumber() + "\t");
+    private void setWinStreakToZero() {
         WIN_STREAK = 0;
     }
 
-    private void increaseWinStreak(GuessingGame guessingGame) {
-        System.out.println("You WON the number was\t" + guessingGame.getRandomNumber());
+    private void increaseWinStreak() {
         WIN_STREAK++;
     }
 
@@ -65,11 +98,17 @@ public class GuessingGamePanel extends javafx.scene.control.Tab {
     }
 
     private void displayAllPrizes(ArrayList<Prize> prizeArrayList) {
-        System.out.println("Here is all Your Prizes :");
         for (Prize prize : prizeArrayList) {
             System.out.println(prize.name());
+            printLogsInWindow(prize.name()+"\n");
         }
+
     }
 
+
+    private void printLogsInWindow(String str){
+        String previousLogs = logLabel.getText();
+        logLabel.setText((previousLogs+str));
+    }
 
 }
