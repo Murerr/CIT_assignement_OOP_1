@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import lottery.game.LotteryGamePanel;
 
 
 public class Main extends Application {

@@ -22,6 +22,8 @@ public class GuessingGamePanel extends javafx.scene.control.Tab {
 
     private Label logLabel;
     private TextField inputText;
+    private Button guessButton;
+    private Button startButton;
 
     public GuessingGamePanel() {
 
@@ -29,16 +31,16 @@ public class GuessingGamePanel extends javafx.scene.control.Tab {
         GridPane gb = new GridPane();
         Label l1 = new Label("Press Start and choose a Number Between 1 & 50");
         inputText = new TextField ();
-        Button guessButton = new Button ("Guess");
+        guessButton = new Button ("Guess");
         guessButton.setDefaultButton(true);
-        Button startButton = new Button ("Start A New Game");
-        Button restartButton = new Button ("Restart");
+        startButton = new Button ("Start A New Game");
+        Button clearButton = new Button ("Clear");
         logLabel = new Label("Logs :\n");
         gb.add(l1,1,0);
         gb.add(inputText,1,1);
         gb.add(startButton,2,0);
         gb.add(guessButton,2,1);
-        gb.add(restartButton,2,2);
+        gb.add(clearButton,2,2);
         gb.add(logLabel,1,2);
         gb.setAlignment(Pos.TOP_LEFT);
         this.setContent(gb);
@@ -51,7 +53,9 @@ public class GuessingGamePanel extends javafx.scene.control.Tab {
                 inputText.setText("");
             });
         });
-
+        clearButton.setOnAction(event1 -> {
+            logLabel.setText("");
+        });
     }
 
     private void startGuessingGame(GuessingGame guessingGame) {
@@ -73,12 +77,14 @@ public class GuessingGamePanel extends javafx.scene.control.Tab {
             increaseWinStreak();
             prizeArrayList.add(getPrize());
             displayAllPrizes(prizeArrayList);
+            startButton.fire();
+
         }
 
         if (guessingGame.isGameLost()) {
             printLogsInWindow(guessingGame.displayGameLost());
             setWinStreakToZero();
-
+            startButton.fire();
         }
     }
 
@@ -104,7 +110,6 @@ public class GuessingGamePanel extends javafx.scene.control.Tab {
         }
 
     }
-
 
     private void printLogsInWindow(String str){
         String previousLogs = logLabel.getText();

@@ -34,7 +34,7 @@ public class GuessingGame {
 
 
     public String displayGameWon() {
-        return "Game Won Number was :\t" + this.randomNumber + "found with \t" + this.attempt + "left\n";
+        return "Game Won Number was : " + this.randomNumber + " found with \t" + this.attempt + " chances left\n";
     }
 
     public String displayGameLost() {
