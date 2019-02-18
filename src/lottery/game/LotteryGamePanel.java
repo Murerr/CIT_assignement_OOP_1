@@ -1,10 +1,7 @@
 package lottery.game;
 
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
 public class LotteryGamePanel extends Tab
@@ -26,12 +23,8 @@ public class LotteryGamePanel extends Tab
         this.setText("Lottery Cure");
 
         GridPane gb = new GridPane();
-        Label l1 = new Label("Press Start and choose a Number Between 1 & 50");
+        Label l1 = new Label("Press Choose 5 Digits to win a prize ! ");
         random1Text = new TextField();
-        random2Text = new TextField();
-        random3Text = new TextField();
-        random4Text = new TextField();
-        random5Text = new TextField();
         guessButton = new Button ("Guess");
         guessButton.setDefaultButton(true);
         startButton = new Button ("Start A New Game");
@@ -40,11 +33,7 @@ public class LotteryGamePanel extends Tab
         gb.add(l1,1,0);
         gb.add(startButton,2,0);
         gb.add(random1Text,1,1);
-        gb.add(random2Text,2,1);
-        gb.add(random3Text,3,1);
-        gb.add(random4Text,4,1);
-        gb.add(random5Text,5,1);
-        gb.add(clearButton,3,2);
+        gb.add(clearButton,2,1);
         gb.add(guessButton,1,2);
 
         gb.add(logLabel,1,4);
@@ -54,12 +43,8 @@ public class LotteryGamePanel extends Tab
             LotteryGame lotteryGame = new LotteryGame();
             printLogsInWindow(displayStartGame(lotteryGame));
             guessButton.setOnAction(event1 -> {
-                int random1 = Integer.parseInt(random1Text.getText());
-                int random2 = Integer.parseInt(random2Text.getText());
-                int random3 = Integer.parseInt(random3Text.getText());
-                int random4 = Integer.parseInt(random4Text.getText());
-                int random5 = Integer.parseInt(random5Text.getText());
-                guessLotteryGame(lotteryGame,random1,random2,random3,random4,random5);
+                int []inputUserNumbersArray = getUserRandomNumbers(random1Text.getText());
+                guessLotteryGame(lotteryGame,inputUserNumbersArray);
             });
         });
         clearButton.setOnAction(event1 -> {
@@ -71,13 +56,15 @@ public class LotteryGamePanel extends Tab
         String previousLogs = logLabel.getText();
         logLabel.setText((previousLogs+str));
     }
-    private void guessLotteryGame(LotteryGame lotteryGame,int random1,int random2,int random3, int random4, int random5) {
+    private void guessLotteryGame(LotteryGame lotteryGame,int []userInputNumber ) {
         int counter = 0;
-        if(lotteryGame.getRandom1() == random1){counter++;};
-        if(lotteryGame.getRandom2() == random2){counter++;};
-        if(lotteryGame.getRandom3() == random3){counter++;};
-        if(lotteryGame.getRandom4() == random4){counter++;};
-        if(lotteryGame.getRandom5() == random5){counter++;};
+        int []lotteryGameRandomNumbersArray = lotteryGame.getRandomNumbersArray();
+
+        for(int i = 0; i <lotteryGame.getLotteryMaxNumbers(); i++) {
+            if (userInputNumber[i] == lotteryGameRandomNumbersArray[i] ){
+                counter++;
+            }
+        }
 
         if(isGameWonWith4Numbers(counter)){
             printLogsInWindow(displayGameWonWith4Numbers(lotteryGame));
@@ -98,7 +85,7 @@ public class LotteryGamePanel extends Tab
     }
 
     private String displayGameWonWith4Numbers(LotteryGame lotteryGame) {
-        return "Game Won the correct answer was" +lotteryGame.getRandom1()+lotteryGame.getRandom2()+lotteryGame.getRandom3()+lotteryGame.getRandom4()+lotteryGame.getRandom5()+"\n You won a 4 Stars";
+        return "Game Won the correct answer was" +lotteryGame.toString()+"\n You won a 4 Stars";
     }
 
     private String displayGameLost(LotteryGame lotteryGame) {
@@ -106,7 +93,16 @@ public class LotteryGamePanel extends Tab
     }
 
     private String displayStartGame(LotteryGame lotteryGame){
-        return  "[CHEAT]" + lotteryGame.getRandom1()+lotteryGame.getRandom2()+lotteryGame.getRandom3()+lotteryGame.getRandom4()+lotteryGame.getRandom5();
+        return  "[CHEAT]" + lotteryGame.toString()+"\n";
+    }
+
+    private int[] getUserRandomNumbers(String input){
+        int[] intArray = new int[5];
+        for(int i = 0; i < input.length(); i++) {
+            char c = input.charAt(i);
+            intArray[i] = Character.getNumericValue(c);
+        }
+        return  intArray;
     }
 
 

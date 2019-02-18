@@ -39,9 +39,9 @@ public class GuessingGamePanel extends javafx.scene.control.Tab {
         gb.add(l1,1,0);
         gb.add(inputText,1,1);
         gb.add(startButton,2,0);
-        gb.add(guessButton,2,1);
-        gb.add(clearButton,2,2);
-        gb.add(logLabel,1,2);
+        gb.add(guessButton,1,2);
+        gb.add(clearButton,2,1);
+        gb.add(logLabel,1,3);
         gb.setAlignment(Pos.TOP_LEFT);
         this.setContent(gb);
 
