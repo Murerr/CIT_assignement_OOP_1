@@ -6,6 +6,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import lottery.game.LotteryGamePanel;
+import prize.game.PrizeGamePanel;
 
 
 public class Main extends Application {
@@ -23,6 +24,7 @@ public class Main extends Application {
             TabPane tp = new TabPane();
             tp.getTabs().add (new GuessingGamePanel());
             tp.getTabs().add (new LotteryGamePanel());
+            tp.getTabs().add (new PrizeGamePanel());
 
 
             mainPane.setCenter(tp);

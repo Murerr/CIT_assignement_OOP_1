@@ -23,7 +23,7 @@ public class LotteryGamePanel extends Tab
         this.setText("Lottery Cure");
 
         GridPane gb = new GridPane();
-        Label l1 = new Label("Press Choose 5 Digits to win a prize ! ");
+        Label l1 = new Label("Choose 5 Digits to win a prize ! ");
         random1Text = new TextField();
         guessButton = new Button ("Guess");
         guessButton.setDefaultButton(true);
