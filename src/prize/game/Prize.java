@@ -12,13 +12,25 @@ public class Prize {
         this.name = name;
     }
 
+    public String getPrize() {
+        return prize;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     @Override
     public String toString() {
         return "PrizeGame{" +
                 "prize='" + prize + '\'' +
                 ", weight=" + weight +
                 ", name='" + name + '\'' +
-                '}';
+                '}'+'\n';
     }
 
 }

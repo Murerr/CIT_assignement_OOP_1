@@ -1,31 +1,24 @@
 package guessing.game;
 
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
-import java.util.ArrayList;
-
 public class GuessingGamePanel extends javafx.scene.control.Tab {
     private static int WIN_STREAK = 0;
 
     private final int MAX_ATTEMPTS = 4;
 
-    private static ArrayList<Prize> prizeArrayList = new ArrayList<>();
-
-    private enum Prize {
-        TWO_STAR_PRIZE,
-        THREE_STAR_PRIZE
-    }
 
     private Label logLabel;
     private TextField inputText;
     private Button guessButton;
     private Button startButton;
 
-    public GuessingGamePanel() {
+    public GuessingGamePanel(ObservableList<Integer> starPrizeWon) {
 
         this.setText("Guessing Game");
         GridPane gb = new GridPane();
@@ -49,7 +42,7 @@ public class GuessingGamePanel extends javafx.scene.control.Tab {
         GuessingGame guessingGame = new GuessingGame(MAX_ATTEMPTS);
         printLogsInWindow(guessingGame.displayStartGame());
             guessButton.setOnAction(event1 -> {
-                startGuessingGame(guessingGame);
+                startGuessingGame(guessingGame,starPrizeWon);
                 inputText.setText("");
             });
         });
@@ -58,7 +51,7 @@ public class GuessingGamePanel extends javafx.scene.control.Tab {
         });
     }
 
-    private void startGuessingGame(GuessingGame guessingGame) {
+    private void startGuessingGame(GuessingGame guessingGame, ObservableList<Integer> starPrizeWon) {
         int userNumberGuessedInput = Integer.parseInt(inputText.getText());
         logLabel.setText("");
 
@@ -75,8 +68,8 @@ public class GuessingGamePanel extends javafx.scene.control.Tab {
         if (guessingGame.isGameWon(userNumberGuessedInput)) {
             printLogsInWindow(guessingGame.displayGameWon());
             increaseWinStreak();
-            prizeArrayList.add(getPrize());
-            displayAllPrizes(prizeArrayList);
+            addPrize(starPrizeWon);
+            displayAllPrizes(starPrizeWon);
             startButton.fire();
 
         }
@@ -96,19 +89,23 @@ public class GuessingGamePanel extends javafx.scene.control.Tab {
         WIN_STREAK++;
     }
 
-    private Prize getPrize() {
+    private void addPrize(ObservableList<Integer> starPrizeWon) {
         if (WIN_STREAK == 5) {
-            return Prize.THREE_STAR_PRIZE;
+            addStarPrize(starPrizeWon, 3);
+        } else {
+            addStarPrize(starPrizeWon, 2);
         }
-        return Prize.TWO_STAR_PRIZE;
     }
 
-    private void displayAllPrizes(ArrayList<Prize> prizeArrayList) {
-        for (Prize prize : prizeArrayList) {
-            System.out.println(prize.name());
-            printLogsInWindow(prize.name()+"\n");
-        }
+    private void addStarPrize(ObservableList<Integer> starPrizeWon, int i) {
+        starPrizeWon.add(i);
+    }
 
+    private void displayAllPrizes(ObservableList<Integer> prizeArrayList) {
+        for (Integer integer : prizeArrayList) {
+            System.out.println(integer);
+            printLogsInWindow(integer + "* Prize \n");
+        }
     }
 
     private void printLogsInWindow(String str){
