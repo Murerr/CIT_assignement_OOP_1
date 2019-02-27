@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import lottery.game.LotteryGamePanel;
+import lottery.game.LotteryGameController;
 import prize.game.PrizeGamePanel;
 
 
@@ -28,7 +28,7 @@ public class Main extends Application {
 
             TabPane tp = new TabPane();
             tp.getTabs().add (new GuessingGameController(starPrizeWon));
-            tp.getTabs().add (new LotteryGamePanel(starPrizeWon));
+            tp.getTabs().add (new LotteryGameController(starPrizeWon));
 
             PrizeGamePanel prizeGamePanelTab = new PrizeGamePanel(starPrizeWon);
             prizeGamePanelTab.setDisable(true);

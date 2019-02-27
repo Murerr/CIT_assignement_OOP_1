@@ -5,7 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
-public class LotteryGamePanel extends Tab
+public class LotteryGameController extends Tab
 {
     //-----------------------------------------------------------------
     //  Sets up this panel with two labels.
@@ -16,7 +16,7 @@ public class LotteryGamePanel extends Tab
     TextField random1Text;
 
 
-    public LotteryGamePanel(ObservableList<Integer> starPrizeWon)
+    public LotteryGameController(ObservableList<Integer> starPrizeWon)
     {
         this.setText("Lottery Cure");
 
@@ -40,11 +40,13 @@ public class LotteryGamePanel extends Tab
         this.setContent(gb);
 
         startButton.setOnAction(event -> {
+            clearLogs();
             LotteryGame lotteryGame = new LotteryGame();
-            printLogsInWindow(displayStartGame(lotteryGame));
+            printLogsInWindow(lotteryGame.displayStartGame());
             guessButton.setOnAction(event1 -> {
                 int []inputUserNumbersArray = getUserRandomNumbers(random1Text.getText());
-                guessLotteryGame(lotteryGame,inputUserNumbersArray,starPrizeWon);
+                String gameLogs = lotteryGame.guessLotteryGame(inputUserNumbersArray,starPrizeWon);
+                printLogsInWindow(gameLogs);
             });
         });
 
@@ -57,76 +59,26 @@ public class LotteryGamePanel extends Tab
         String previousLogs = logLabel.getText();
         logLabel.setText((previousLogs+str));
     }
-    private void guessLotteryGame(LotteryGame lotteryGame, int[] userInputNumber, ObservableList<Integer> starPrizeWon) {
-        int counter = 0;
-        int []lotteryGameRandomNumbersArray = lotteryGame.getRandomNumbersArray();
-
-        for(int i = 0; i <lotteryGame.getLotteryMaxNumbers(); i++) {
-            if (userInputNumber[i] == lotteryGameRandomNumbersArray[i] ){
-                counter++;
-            }
-        }
-
-        if(isGameWonWith4Numbers(counter)){
-            addStarPrize(starPrizeWon,4);
-            printLogsInWindow(displayGameWonWith4Numbers(lotteryGame));
-            displayAllPrizes(starPrizeWon);
-            startButton.fire();
-
-        } else if(isGameWonWith5Numbers(counter)){
-            addStarPrize(starPrizeWon,5);
-            printLogsInWindow(displayGameWonWith5Numbers(lotteryGame));
-            displayAllPrizes(starPrizeWon);
-            startButton.fire();
-
-        }
-        else {
-            printLogsInWindow(displayGameLost(lotteryGame));
-        }
-    }
-
-    private boolean isGameWonWith4Numbers(int counter) {
-        return counter == 4;
-    }
-
-    private boolean isGameWonWith5Numbers(int counter) {
-        return counter == 5;
-    }
-
-    private String displayGameWonWith5Numbers(LotteryGame lotteryGame) {
-        return "Game Won the correct answer was" +lotteryGame.toString()+"\n You won a 5 Stars prize \n";
-    }
-
-    private String displayGameWonWith4Numbers(LotteryGame lotteryGame) {
-        return "Game Won the correct answer was" +lotteryGame.toString()+"\n You won a 4 Stars prize \n";
-    }
-
-    private String displayGameLost(LotteryGame lotteryGame) {
-        return  "Game Lost the correct answer was " + lotteryGame.toString() + "\nTry Again ?\n";
-    }
-
-    private String displayStartGame(LotteryGame lotteryGame){
-        return  "[CHEAT]" + lotteryGame.toString()+"\n";
-    }
 
     private int[] getUserRandomNumbers(String input){
         int[] intArray = new int[5];
-        for(int i = 0; i < input.length(); i++) {
-            char c = input.charAt(i);
-            intArray[i] = Character.getNumericValue(c); //char to int
+        try {
+            for(int i = 0; i < input.length(); i++) {
+                char c = input.charAt(i);
+                intArray[i] = Character.getNumericValue(c); //char to int
+            }
+            return  intArray;
+        } catch (Exception e){
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.toString(), ButtonType.OK);
+            alert.showAndWait();
         }
-        return  intArray;
+        return intArray;
     }
 
-    private void addStarPrize(ObservableList<Integer> starPrizeWon, int i) {
-        starPrizeWon.add(i);
+    private void clearLogs() {
+        logLabel.setText("");
     }
-    private void displayAllPrizes(ObservableList<Integer> prizeArrayList) {
-        for (Integer integer : prizeArrayList) {
-            System.out.println(integer);
-            printLogsInWindow(integer + "* Prize \n");
-        }
-    }
+
 
 
 }

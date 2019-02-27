@@ -17,40 +17,40 @@ public class GuessingGame {
         this.randomNumber = new Random().nextInt(50) + 1;
     }
 
-    public boolean isGuessedNumberBigger(int numberGuessed) {
+    private boolean isGuessedNumberBigger(int numberGuessed) {
         return this.randomNumber > numberGuessed;
     }
 
-    public boolean isGuessedNumberSmaller(int numberGuessed) {
+    private boolean isGuessedNumberSmaller(int numberGuessed) {
         return this.randomNumber < numberGuessed;
     }
 
-    public void decreaseAttempt() {
+    private void decreaseAttempt() {
         this.attempt--;
     }
 
-    public boolean isGameWon(int numberGuessed) {
+    private boolean isGameWon(int numberGuessed) {
         return numberGuessed == this.randomNumber;
     }
 
-    public boolean isGameLost() {
+    private boolean isGameLost() {
         return this.attempt == 0;
     }
 
 
-    public String displayGameWon() {
+    private String displayGameWon() {
         return "Game Won Number was : " + this.randomNumber + " found with \t" + this.attempt + " chances left\n";
     }
 
-    public String displayGameLost() {
+    private String displayGameLost() {
         return "Game Lost the correct Number was :\t" + this.randomNumber + "\n";
     }
 
-    public String displayNumberIsBigger(int numberGuessed) {
+    private String displayNumberIsBigger(int numberGuessed) {
         return ("The number is bigger than:\t" + numberGuessed + "\t" +this.attempt + " attempts left\n");
     }
 
-    public String displayNumberIsSmaller(int numberGuessed) {
+    private String displayNumberIsSmaller(int numberGuessed) {
         return "The number is smaller than:\t" + numberGuessed + "\t" +this.attempt + " attempts left\n";
     }
 
@@ -80,7 +80,7 @@ public class GuessingGame {
         starPrizeWon.add(i);
     }
 
-    public String displayAllPrizes(ObservableList<Integer> prizeArrayList) {
+    private String displayAllPrizes(ObservableList<Integer> prizeArrayList) {
         String allPrizeToString="";
         for (Integer integer : prizeArrayList) {
             System.out.println(integer);
