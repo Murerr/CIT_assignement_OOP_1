@@ -113,7 +113,7 @@ public class LotteryGamePanel extends Tab
         int[] intArray = new int[5];
         for(int i = 0; i < input.length(); i++) {
             char c = input.charAt(i);
-            intArray[i] = Character.getNumericValue(c);
+            intArray[i] = Character.getNumericValue(c); //char to int
         }
         return  intArray;
     }

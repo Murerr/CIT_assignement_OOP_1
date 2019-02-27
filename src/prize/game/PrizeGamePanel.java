@@ -17,7 +17,6 @@ public class PrizeGamePanel extends javafx.scene.control.Tab {
 
     Label allTheStarPrizeText;
     Label shoppingListText;
-    Button pickButton;
     Label logLabel;
     ChoiceBox cb;
     DialogPane dp;
@@ -86,15 +85,15 @@ public class PrizeGamePanel extends javafx.scene.control.Tab {
     }
 
     private void displayStarPrizes(ObservableList<Integer> starPrizeWon) {
-        String previousListTest = allTheStarPrizeText.getText();
-        allTheStarPrizeText.setText(previousListTest + starPrizeWon.toString()+"\n");
+        allTheStarPrizeText.setText("StarPrizes :" + starPrizeWon.toString()+"\n");
     }
 
     private boolean isPrizeAvailable(ObservableList<Integer> starPrizeWon, Prize selectedPrize) {
         return  starPrizeWon.contains(selectedPrize.getWeight());
     }
 
-
+    /*
+    * */
     private ObservableList<Prize> getPrizeList() {
         return FXCollections.observableArrayList(
             new Prize("1000",5,"Apple"),
@@ -115,9 +114,5 @@ public class PrizeGamePanel extends javafx.scene.control.Tab {
         logLabel.setText((previousLogs+str));
     }
 
-    /**
-     * VBox dialogVbox = new VBox(20);
-     *                 dialogVbox.getChildren().add(new Text("This is a Dialog"));
-     */
 
 }
